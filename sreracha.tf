@@ -289,7 +289,7 @@ provisioner "file" {
     private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
   }
 }
-resource "aws_elb" "web" {
+resource "aws_elb" "example-elb" {
 
 name = "example-elb"
 
@@ -326,16 +326,16 @@ name = "example-elb"
 
 resource "aws_lb_cookie_stickiness_policy" "default" {
   name                     = "lbpolicy"
-  load_balancer            = "${aws_elb.web.id}"
+  load_balancer            = "${aws_elb.example-elb.id}"
   lb_port                  = 80
   cookie_expiration_period = 600
 }
-resource "template_file" "user_data" {
-  template = "app.tpl"
-  vars {
-    cluster = "apache2"
-  }
-}
+#resource "template_file" "user_data" {
+  #template = "app.tpl"
+  #vars {
+    #cluster = "apache2"
+ # }
+#}
 resource "aws_elb" "main" {
   name               = "terraform-elb"
   availability_zones = ["us-east-1b", "us-east-1c", "us-east-1d"]
